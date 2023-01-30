@@ -1,0 +1,15 @@
+{
+  "name": "qr-reader-app",
+  "version": "1.0.0",
+  "description": "qr-reader-app",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "moskau",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.6.3",
+    "qr-scanner": "^1.4.2"
+  }
+}

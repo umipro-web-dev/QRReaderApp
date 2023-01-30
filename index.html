@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        
+        <style>
+            body {
+                text-align:center;
+            }
+        </style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+<script>
+
+$(function () {
+
+$("#a").fadeIn().html("<em>Hello jquery!</em>");
+
+
+
+var videoElem = document.getElementById("video");
+var canvas = document.getElementById("canvas");
+
+var context = canvas.getContext("2d");
+
+function getQrsText() {
+
+
+    console.log("start");
+
+    while (true) {
+
+    context.drawImage(videoElem, 0, 0);
+
+    var image = context.getImageData(0, 0, canvas.width, canvas.height);
+
+    var textObj = jsQR(image.data, canvas.width, canvas.height);
+
+    if (textObj) {
+
+        $("#out").text(textObj.data);
+        console.log(textObj);
+
+        break;
+    }
+
+    console.log(textObj);
+    }
+   
+}
+
+$("#startButton").on("click", () => {
+
+    navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+            width: canvas.width,
+            height: canvas.height
+        }
+    })
+
+    .then((video) => {
+
+        // async start ?
+
+        videoElem.srcObject = video;
+        videoElem.play();
+        console.log(video);
+
+        //async end ?
+        
+
+        setTimeout(() => getQrsText(), 2000);
+   
+
+
+    })
+
+     .catch((e) => {
+        console.log(e);
+
+    });
+
+    });
+
+
+});
+
+</script>
+    </head>
+    <body>
+        
+        <p id="a" style="display: none">Hello Electron!</p>
+        <br/>
+        <video id="video"></video>
+        <br/>
+        <button id="startButton"></button>
+        <br/>
+        <p id="out"></p>
+        <br/>
+        <br/>
+        <canvas id="canvas" width=500 height="500">canvas</canvas>
+    </body>
+</html>
