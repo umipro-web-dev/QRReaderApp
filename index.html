@@ -15,21 +15,19 @@
 
 $(function () {
 
-$("#a").fadeIn().html("<em>Hello jquery!</em>");
 
-
+var id;
 
 var videoElem = document.getElementById("video");
 var canvas = document.getElementById("canvas");
 
 var context = canvas.getContext("2d");
 
+
 function getQrsText() {
 
 
-    console.log("start");
 
-    while (true) {
 
     context.drawImage(videoElem, 0, 0);
 
@@ -42,64 +40,74 @@ function getQrsText() {
         $("#out").text(textObj.data);
         console.log(textObj);
 
-        break;
-    }
 
-    console.log(textObj);
-    }
-   
-}
+        clearInterval(id);
 
-$("#startButton").on("click", () => {
 
-    navigator.mediaDevices.getUserMedia({
-        audio: false,
-        video: {
-            width: canvas.width,
-            height: canvas.height
-        }
-    })
 
-    .then((video) => {
-
-        // async start ?
-
-        videoElem.srcObject = video;
-        videoElem.play();
-        console.log(video);
-
-        //async end ?
         
+        }
 
-        setTimeout(() => getQrsText(), 2000);
+    
+   
+    }
+
+
+
+//$("#startButton").on("click", () => { });
+
+//onload script
+navigator.mediaDevices.getUserMedia({
+    audio: false,
+    video: {
+        width: canvas.width,
+        height: canvas.height
+    }
+})
+
+.then((video) => {
+
+    // async start ?
+
+    videoElem.srcObject = video;
+    videoElem.play();
+    console.log(video);
+
+    //async end ?
+
+
+    
+    id = setInterval(() => getQrsText(), 1000);
+
+
    
 
 
-    })
+})
 
-     .catch((e) => {
-        console.log(e);
+ .catch((e) => {
+    console.log(e);
 
-    });
+});
 
-    });
+    
 
 
 });
 
+// 
 </script>
     </head>
     <body>
         
-        <p id="a" style="display: none">Hello Electron!</p>
+        <h1 id="a">入室管理</h1>
         <br/>
+        <p>認証用のQRコードをかざしてください</p>
         <video id="video"></video>
-        <br/>
-        <button id="startButton"></button>
         <br/>
         <p id="out"></p>
         <br/>
         <br/>
-        <canvas id="canvas" width=500 height="500">canvas</canvas>
+        <canvas id="canvas" width="1000" height="700" style="display:none">canvas</canvas>
     </body>
 </html>
