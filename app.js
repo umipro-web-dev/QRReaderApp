@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require("electron");
 
-const start = () => {
+function start() {
+
     const window = new BrowserWindow({
         width: 500,
         height: 500
@@ -14,13 +15,10 @@ const start = () => {
 
     }
     
-    
-    
+        
 }
 
-app.on("ready", () => {
-    start();
-    
-});
+
+app.on("ready", () => start());
 
 app.setName("app");

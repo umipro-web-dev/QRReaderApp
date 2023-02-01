@@ -1,41 +1,78 @@
-const { QrScanner } = require("qr-scanner");
-const $ = require("jquery");
 
 $(function () {
 
-    $("#a").fadeIn().html("<em>Hello jquery!</em>");
 
-    var videoElem = $("#video");
-
-    $("#startButton").on("click", () => {
-
-        navigator.mediaDevices.getUserMedia({
-            audio: false,
-            video: true
-        })
-        
-        .then((video) => {
-            videoElem[0].srcObject = video;
-            videoElem[0].play();
-
-            var qrReader = new QrScanner(
-                videoElem[0],
-                result => {
-                    console.log(result);
-                    qrReader.stop();
-                }
-            );
-
-            qrReader.start();
-
-        })
-
-        .catch((e) => {
-            console.log(e);
-
-        });
-        
-    });
-
+    let id;
     
-});
+    let videoElem = document.getElementById("video");
+    let canvas = document.getElementById("canvas");
+    
+    let context = canvas.getContext("2d");
+
+    let se = new Audio("SE.mp3");
+    
+    
+    function getQrsText() {
+    
+    
+    
+    
+        context.drawImage(videoElem, 0, 0);
+    
+        let image = context.getImageData(0, 0, canvas.width, canvas.height);
+    
+        let textObj = jsQR(image.data, canvas.width, canvas.height);
+    
+        if (textObj) {
+    
+            $("#out").text(textObj.data);
+            console.log(textObj);
+    
+    
+            clearInterval(id);
+
+            se.play();
+
+            }
+    
+        }
+    
+    //onload script
+    navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+            width: canvas.width,
+            height: canvas.height
+        }
+    })
+    
+    .then((video) => {
+    
+        // async start ?
+    
+        videoElem.srcObject = video;
+        videoElem.play();
+        console.log(video);
+    
+        //async end ?
+    
+    
+        
+        id = setInterval(() => getQrsText(), 500);
+    
+    
+       
+    
+    
+    })
+    
+     .catch((e) => {
+        console.log(e);
+    
+    });
+    
+        
+    
+    
+    }
+    );

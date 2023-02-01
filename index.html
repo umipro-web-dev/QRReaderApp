@@ -11,92 +11,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-<script>
 
-$(function () {
-
-
-var id;
-
-var videoElem = document.getElementById("video");
-var canvas = document.getElementById("canvas");
-
-var context = canvas.getContext("2d");
-
-
-function getQrsText() {
-
-
-
-
-    context.drawImage(videoElem, 0, 0);
-
-    var image = context.getImageData(0, 0, canvas.width, canvas.height);
-
-    var textObj = jsQR(image.data, canvas.width, canvas.height);
-
-    if (textObj) {
-
-        $("#out").text(textObj.data);
-        console.log(textObj);
-
-
-        clearInterval(id);
-
-
-
-        
-        }
-
-    
-   
-    }
-
-
-
-//$("#startButton").on("click", () => { });
-
-//onload script
-navigator.mediaDevices.getUserMedia({
-    audio: false,
-    video: {
-        width: canvas.width,
-        height: canvas.height
-    }
-})
-
-.then((video) => {
-
-    // async start ?
-
-    videoElem.srcObject = video;
-    videoElem.play();
-    console.log(video);
-
-    //async end ?
-
-
-    
-    id = setInterval(() => getQrsText(), 1000);
-
-
-   
-
-
-})
-
- .catch((e) => {
-    console.log(e);
-
-});
-
-    
-
-
-});
-
-// 
-</script>
     </head>
     <body>
         
@@ -109,5 +24,6 @@ navigator.mediaDevices.getUserMedia({
         <br/>
         <br/>
         <canvas id="canvas" width="1000" height="700" style="display:none">canvas</canvas>
+        <script src="front.js"></script>
     </body>
 </html>
