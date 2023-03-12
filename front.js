@@ -1,4 +1,4 @@
-
+ 
 $(function () {
 
 
@@ -10,9 +10,12 @@ $(function () {
     let context = canvas.getContext("2d");
 
     let se = new Audio("SE.mp3");
+
+    $(".loading").hide();
+    $(".result").hide();
     
     
-    function getQrsText() {
+    async function getQrsText() {
     
     
     
@@ -24,14 +27,44 @@ $(function () {
         let textObj = jsQR(image.data, canvas.width, canvas.height);
     
         if (textObj) {
-    
-            $("#out").text(textObj.data);
-            console.log(textObj);
-    
-    
+
             clearInterval(id);
 
+            $("body").css("background-color", "#50C6FA");
+            $(".loading").show(); 
+            $("main").hide();
+
+
+
+            const res_from_render = await fetch("https://enter-room.onrender.com/check", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    data: textObj.data
+                })
+            });
+
+            if (!res_from_render.ok) {
+                $(".loading").hide();
+                $(".result").show();
+                $("body").css("background-color", "#FF311C");
+                $(".result .message").text("無効なQRコードです。");
+                return;
+            }
+
+            const res_html = await res_from_render.text();
+
+            $(".loading").hide();
+
+            document.write(res_html);
+
             se.play();
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 5000)
 
             }
     
@@ -58,7 +91,7 @@ $(function () {
     
     
         
-        id = setInterval(() => getQrsText(), 500);
+        id = setInterval(() => getQrsText(), 1000);
     
     
        

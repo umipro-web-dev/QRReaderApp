@@ -4,12 +4,26 @@
   "description": "qr-reader-app",
   "main": "app.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build:mac": "electron-builder --mac --x64 --dir"
   },
   "author": "moskau",
   "license": "MIT",
+  "build": {
+    "mac": {
+      "extendInfo": {
+        "NSCameraUsageDescription": "req",
+        "NSMicrophoneUsageDescription": "reqm"
+      },
+      "hardenedRuntime": false
+    }
+  },
   "dependencies": {
     "jquery": "^3.6.3",
     "qr-scanner": "^1.4.2"
+  },
+  "devDependencies": {
+    "electron": "^23.1.0",
+    "electron-builder": "^23.6.0"
   }
 }

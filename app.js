@@ -1,10 +1,13 @@
-const {app, BrowserWindow} = require("electron");
+const {app, BrowserWindow, systemPreferences} = require("electron");
 
 function start() {
 
     const window = new BrowserWindow({
         width: 500,
-        height: 500
+        height: 500,
+        webPreferences: {
+            devTools: app.isPackaged ? false : true
+        }
     });
 
     window.loadFile("index.html");
@@ -14,11 +17,28 @@ function start() {
     window.webContents.openDevTools();
 
     }
+
+    window.webContents.on("devtools-opened", () => {
+        if (app.isPackaged) {
+            //window.webContents.closeDevTools();
+        }
+    })
     
         
 }
 
 
-app.on("ready", () => start());
+app.on("ready", async () => {
+    
+    let result = await systemPreferences.askForMediaAccess("camera");
 
-app.setName("app");
+    while (!result) {
+        result = await systemPreferences.askForMediaAccess("camera");
+    }
+
+
+    start();
+});
+
+
+app.setName("入室管理アプリ");
