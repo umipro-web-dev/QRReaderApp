@@ -43,7 +43,8 @@ $(function () {
                 },
                 body: JSON.stringify({
                     data: textObj.data
-                })
+                }),
+                mode: "cors"
             });
 
             if (!res_from_render.ok) {
