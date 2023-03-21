@@ -9,7 +9,7 @@ $(function () {
     
     let context = canvas.getContext("2d");
 
-    let se = new Audio("SE.mp3");
+    let se = new Audio("./SE.mp3");
 
     $(".loading").hide();
     $(".result").hide();

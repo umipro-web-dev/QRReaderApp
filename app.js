@@ -10,7 +10,7 @@ function start() {
         }
     });
 
-    window.loadFile("index.html");
+    window.loadFile("./publuc/index.html");
 
     if (!app.isPackaged) {
 
